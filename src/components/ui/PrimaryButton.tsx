@@ -17,7 +17,7 @@ export function PrimaryButton({
     <motion.button
       whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
       whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
-      className={`rounded-full bg-wine px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-lg shadow-wine/20 transition-colors hover:bg-wine-dark disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`rounded-full bg-gradient-to-r from-pink-400 to-pink-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-pink-200 transition-opacity hover:from-pink-500 hover:to-pink-600 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

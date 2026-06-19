@@ -1,8 +1,8 @@
 export type Answer = "yes" | "no";
 
 export type InviteStep =
-  | "landing"
   | "question"
+  | "yay"
   | "date"
   | "activity"
   | "message"

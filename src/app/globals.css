@@ -1,54 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --cream: #fff8f0;
-  --blush: #f9e4e8;
-  --lavender: #e8e0f0;
-  --wine: #722f37;
-  --wine-dark: #5a252c;
-  --foreground: #2d1f24;
-  --muted: #6b5560;
+  --pink-50: #fdf2f8;
+  --pink-100: #fce7f3;
+  --pink-200: #fbcfe8;
+  --pink-400: #f472b6;
+  --pink-500: #ec4899;
+  --pink-600: #db2777;
+  --lavender: #f3e8ff;
+  --foreground: #374151;
+  --muted: #6b7280;
 }
 
 @theme inline {
-  --color-cream: var(--cream);
-  --color-blush: var(--blush);
+  --color-pink-50: var(--pink-50);
+  --color-pink-100: var(--pink-100);
+  --color-pink-200: var(--pink-200);
+  --color-pink-400: var(--pink-400);
+  --color-pink-500: var(--pink-500);
+  --color-pink-600: var(--pink-600);
   --color-lavender: var(--lavender);
-  --color-wine: var(--wine);
-  --color-wine-dark: var(--wine-dark);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-pacifico);
 }
 
 body {
   color: var(--foreground);
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-nunito), system-ui, sans-serif;
 }
 
-.font-serif {
-  font-family: var(--font-cormorant), Georgia, serif;
+.font-display {
+  font-family: var(--font-pacifico), cursive;
 }
 
 .invite-gradient {
   background: linear-gradient(
-    135deg,
-    var(--cream) 0%,
-    var(--blush) 35%,
-    var(--lavender) 70%,
-    #f5d0d8 100%
+    180deg,
+    #fce7f3 0%,
+    #fdf2f8 45%,
+    #f3e8ff 100%
   );
 }
 
 .admin-gradient {
-  background: linear-gradient(160deg, #f8f6f4 0%, #ece8ef 100%);
+  background: linear-gradient(160deg, #fdf2f8 0%, #f3f4f6 100%);
+}
+
+.display-title {
+  font-family: var(--font-pacifico), cursive;
+  color: var(--pink-500);
+  text-shadow:
+    2px 2px 0 white,
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white;
 }
 
 @keyframes shimmer {
   0%,
   100% {
-    opacity: 0.4;
+    opacity: 0.5;
   }
   50% {
     opacity: 1;
@@ -56,5 +69,23 @@ body {
 }
 
 .animate-shimmer {
-  animation: shimmer 3s ease-in-out infinite;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+.cute-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 50px rgba(236, 72, 153, 0.12);
+}
+
+.cute-input {
+  border: 2px solid var(--pink-200);
+  border-radius: 1rem;
+  background: white;
+}
+
+.cute-input:focus {
+  outline: none;
+  border-color: var(--pink-400);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.2);
 }

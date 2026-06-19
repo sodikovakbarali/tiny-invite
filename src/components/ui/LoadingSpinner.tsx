@@ -16,7 +16,7 @@ export function LoadingSpinner({
     <div
       className={`flex flex-col items-center justify-center gap-3 py-8 ${className}`}
     >
-      <Loader2 className="h-8 w-8 animate-spin text-wine" />
+      <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
       <p className="text-sm text-muted">{label}</p>
     </div>
   );

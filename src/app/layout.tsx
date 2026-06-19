@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Nunito, Pacifico } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const pacifico = Pacifico({
+  variable: "--font-pacifico",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -18,7 +18,7 @@ const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Tiny Invite";
 
 export const metadata: Metadata = {
   title: siteName,
-  description: "A tiny website for one very specific person.",
+  description: "A cute little invitation.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable} h-full`}>
+    <html lang="en" className={`${pacifico.variable} ${nunito.variable} h-full`}>
       <body className="min-h-full antialiased">{children}</body>
     </html>
   );

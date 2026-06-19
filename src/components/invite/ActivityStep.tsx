@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { ACTIVITIES } from "@/lib/activities";
+import { activityCopy } from "@/lib/copy";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { SelectableCard } from "@/components/ui/SelectableCard";
+import { StepHeader } from "@/components/ui/StepHeader";
 
 interface ActivityStepProps {
   selectedActivity: string;
@@ -17,31 +18,35 @@ export function ActivityStep({
   onContinue,
 }: ActivityStepProps) {
   return (
-    <div className="flex flex-col">
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-serif text-2xl font-semibold leading-tight text-foreground sm:text-3xl"
-      >
-        What kind of date are we doing?
-      </motion.h2>
+    <div className="flex flex-col items-center text-center">
+      <StepHeader emoji={activityCopy.emoji} title={activityCopy.heading} />
 
-      <div className="mt-8 flex flex-col gap-3">
-        {ACTIVITIES.map((activity) => (
-          <SelectableCard
-            key={activity.id}
-            title={activity.title}
-            description={activity.description}
-            icon={activity.icon}
-            selected={selectedActivity === activity.id}
-            onSelect={() => onSelectActivity(activity.id)}
-          />
-        ))}
+      <div className="mt-8 grid w-full grid-cols-2 gap-3">
+        {ACTIVITIES.map((activity) => {
+          const selected = selectedActivity === activity.id;
+
+          return (
+            <motion.button
+              key={activity.id}
+              type="button"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onSelectActivity(activity.id)}
+              className={`rounded-2xl border-2 px-3 py-4 text-sm font-medium transition-all ${
+                selected
+                  ? "border-pink-400 bg-pink-50 text-pink-600 shadow-md shadow-pink-100"
+                  : "border-pink-100 bg-white text-foreground hover:border-pink-200 hover:bg-pink-50/50"
+              }`}
+            >
+              {activity.label}
+            </motion.button>
+          );
+        })}
       </div>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8">
         <PrimaryButton onClick={onContinue} disabled={!selectedActivity}>
-          Continue
+          {activityCopy.cta}
         </PrimaryButton>
       </div>
     </div>

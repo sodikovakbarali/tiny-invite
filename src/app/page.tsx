@@ -1,26 +1,17 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ActivityStep } from "@/components/invite/ActivityStep";
 import { ConfirmStep } from "@/components/invite/ConfirmStep";
 import { DateStep } from "@/components/invite/DateStep";
-import { LandingStep } from "@/components/invite/LandingStep";
 import { MessageStep } from "@/components/invite/MessageStep";
 import { QuestionStep } from "@/components/invite/QuestionStep";
 import { SuccessStep } from "@/components/invite/SuccessStep";
+import { YayStep } from "@/components/invite/YayStep";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { StepContainer } from "@/components/ui/StepContainer";
 import { useInviteFlow } from "@/hooks/useInviteFlow";
-
-const AnimatedBackground = dynamic(
-  () =>
-    import("@/components/ui/AnimatedBackground").then(
-      (module) => module.AnimatedBackground,
-    ),
-  { ssr: false },
-);
 
 function InviteFlow() {
   const searchParams = useSearchParams();
@@ -30,35 +21,28 @@ function InviteFlow() {
 
   return (
     <main className="invite-gradient relative min-h-screen overflow-hidden">
-      <AnimatedBackground />
-
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-lg items-center px-4 py-12 sm:py-16">
-        <div className="w-full rounded-3xl border border-white/40 bg-white/30 p-6 shadow-xl shadow-wine/5 backdrop-blur-md sm:p-10">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-md items-center px-4 py-10 sm:py-14">
+        <div className="cute-card w-full rounded-[2rem] p-6 sm:p-9">
           <StepContainer stepKey={flow.step}>
-            {flow.step === "landing" && (
-              <LandingStep
-                name={name}
-                onContinue={() => flow.goToStep("question")}
-              />
-            )}
-
             {flow.step === "question" && (
               <QuestionStep
                 noAttempts={flow.noAttempts}
                 isSubmitting={flow.isSubmitting}
                 error={flow.error}
-                onYes={() => flow.goToStep("date")}
+                onYes={() => flow.goToStep("yay")}
                 onNo={flow.submitNo}
                 onDodge={flow.incrementNoAttempts}
               />
             )}
 
+            {flow.step === "yay" && (
+              <YayStep onContinue={() => flow.goToStep("date")} />
+            )}
+
             {flow.step === "date" && (
               <DateStep
-                selectedDateId={flow.selectedDateId}
-                customDate={flow.customDate}
-                onSelectDate={flow.setSelectedDateId}
-                onCustomDateChange={flow.setCustomDate}
+                selectedDate={flow.selectedDate}
+                onDateChange={flow.setSelectedDate}
                 onContinue={() => flow.goToStep("activity")}
               />
             )}
@@ -104,7 +88,7 @@ export default function HomePage() {
     <Suspense
       fallback={
         <main className="invite-gradient flex min-h-screen items-center justify-center">
-          <LoadingSpinner label="Opening something special..." />
+          <LoadingSpinner label="Loading..." />
         </main>
       }
     >

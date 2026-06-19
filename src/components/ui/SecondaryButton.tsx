@@ -17,7 +17,7 @@ export function SecondaryButton({
     <motion.button
       whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
       whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
-      className={`rounded-full border border-wine/30 bg-white/70 px-8 py-3.5 text-sm font-semibold tracking-wide text-wine backdrop-blur-sm transition-colors hover:border-wine/50 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`rounded-full border-2 border-pink-100 bg-white px-8 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-pink-200 hover:bg-pink-50 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

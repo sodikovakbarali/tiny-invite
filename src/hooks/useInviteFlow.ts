@@ -2,7 +2,6 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ACTIVITIES } from "@/lib/activities";
-import { DATE_OPTIONS } from "@/lib/dateOptions";
 import type { InviteStep, SubmitPayload } from "@/types/response";
 
 async function submitResponse(payload: SubmitPayload): Promise<void> {
@@ -19,23 +18,30 @@ async function submitResponse(payload: SubmitPayload): Promise<void> {
   }
 }
 
+function formatDate(value: string) {
+  if (!value) return "";
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export function useInviteFlow(name?: string) {
-  const [step, setStep] = useState<InviteStep>("landing");
+  const [step, setStep] = useState<InviteStep>("question");
   const [noAttempts, setNoAttempts] = useState(0);
-  const [selectedDateId, setSelectedDateId] = useState<string>("");
-  const [customDate, setCustomDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectedActivity, setSelectedActivity] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const resolvedDate = useMemo(() => {
-    if (selectedDateId === "custom") {
-      return customDate.trim();
-    }
-    const option = DATE_OPTIONS.find((item) => item.id === selectedDateId);
-    return option?.label ?? "";
-  }, [selectedDateId, customDate]);
+  const resolvedDate = useMemo(
+    () => formatDate(selectedDate),
+    [selectedDate],
+  );
 
   const goToStep = useCallback((next: InviteStep) => {
     setError("");
@@ -72,7 +78,7 @@ export function useInviteFlow(name?: string) {
         answer: "yes",
         name: name || undefined,
         selected_date: resolvedDate,
-        selected_activity: activity?.title ?? selectedActivity,
+        selected_activity: activity?.label ?? selectedActivity,
         message: message.trim() || undefined,
       });
       setStep("success");
@@ -86,15 +92,13 @@ export function useInviteFlow(name?: string) {
   return {
     step,
     noAttempts,
-    selectedDateId,
-    customDate,
+    selectedDate,
     selectedActivity,
     message,
     resolvedDate,
     isSubmitting,
     error,
-    setSelectedDateId,
-    setCustomDate,
+    setSelectedDate,
     setSelectedActivity,
     setMessage,
     goToStep,

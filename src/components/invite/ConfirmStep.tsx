@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { ACTIVITIES } from "@/lib/activities";
+import { getConfirmCopy } from "@/lib/copy";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { StepHeader } from "@/components/ui/StepHeader";
 
 interface ConfirmStepProps {
   resolvedDate: string;
@@ -21,28 +23,26 @@ export function ConfirmStep({
   onSubmit,
 }: ConfirmStepProps) {
   const activity = ACTIVITIES.find((a) => a.id === selectedActivity);
-  const activityLabel = activity?.title ?? selectedActivity;
+  const activityLabel = activity?.label ?? selectedActivity;
+  const copy = getConfirmCopy(resolvedDate, activityLabel);
 
   return (
     <div className="flex flex-col items-center text-center">
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="w-full rounded-3xl border border-wine/10 bg-white/60 p-8 backdrop-blur-sm"
+      <StepHeader emoji={copy.emoji} title={copy.heading} />
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="mt-6 rounded-2xl bg-pink-50 px-5 py-4 text-sm font-medium leading-relaxed text-foreground"
       >
-        <p className="text-sm font-medium uppercase tracking-widest text-wine/60">
-          Final confirmation
-        </p>
-        <h2 className="mt-4 font-serif text-2xl font-semibold leading-snug text-foreground sm:text-3xl">
-          Confirmed: You + me + {resolvedDate} + {activityLabel}.
-        </h2>
-      </motion.div>
+        {copy.summary}
+      </motion.p>
 
       {error && <ErrorMessage message={error} className="mt-6 w-full" />}
 
       <div className="mt-8">
         <PrimaryButton onClick={onSubmit} isLoading={isSubmitting}>
-          Lock it in
+          {copy.cta}
         </PrimaryButton>
       </div>
     </div>
