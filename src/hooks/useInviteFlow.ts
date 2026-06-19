@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ACTIVITIES } from "@/lib/activities";
+import { getSubmitErrorMessage } from "@/lib/copy";
 import type { InviteStep, SubmitPayload } from "@/types/response";
 
 async function submitResponse(payload: SubmitPayload): Promise<void> {
@@ -60,11 +61,11 @@ export function useInviteFlow(name?: string) {
         answer: "no",
         name: name || undefined,
       });
-      setStep("no-respect");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit.");
+    } catch {
+      // Still honor their no — never trap them on a server hiccup.
     } finally {
       setIsSubmitting(false);
+      setStep("no-respect");
     }
   }, [name]);
 
@@ -83,7 +84,8 @@ export function useInviteFlow(name?: string) {
       });
       setStep("success");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit.");
+      const raw = err instanceof Error ? err.message : undefined;
+      setError(getSubmitErrorMessage(raw));
     } finally {
       setIsSubmitting(false);
     }

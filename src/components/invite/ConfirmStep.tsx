@@ -38,7 +38,9 @@ export function ConfirmStep({
         {copy.summary}
       </motion.p>
 
-      {error && <ErrorMessage message={error} className="mt-6 w-full" />}
+      {error && (
+        <ErrorMessage message={error} variant="cute" className="mt-6 w-full" />
+      )}
 
       <div className="mt-8">
         <PrimaryButton onClick={onSubmit} isLoading={isSubmitting}>

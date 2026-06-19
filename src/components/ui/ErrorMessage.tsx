@@ -1,21 +1,31 @@
 "use client";
 
-import { AlertCircle } from "lucide-react";
-
 interface ErrorMessageProps {
   message: string;
   className?: string;
+  variant?: "default" | "cute";
 }
 
-export function ErrorMessage({ message, className = "" }: ErrorMessageProps) {
+export function ErrorMessage({
+  message,
+  className = "",
+  variant = "default",
+}: ErrorMessageProps) {
   if (!message) return null;
+
+  const styles =
+    variant === "cute"
+      ? "border-pink-200 bg-pink-50 text-pink-700"
+      : "border-red-200 bg-red-50 text-red-800";
 
   return (
     <div
       role="alert"
-      className={`flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 ${className}`}
+      className={`flex items-start gap-2 rounded-2xl border px-4 py-3 text-sm ${styles} ${className}`}
     >
-      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+      <span className="shrink-0 text-base leading-none">
+        {variant === "cute" ? "🥲" : "!"}
+      </span>
       <span>{message}</span>
     </div>
   );

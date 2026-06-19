@@ -56,8 +56,24 @@ export const successCopy = {
     body: "Got it. Can't wait 💕",
   },
   no: {
-    emoji: "🙂",
-    title: "All good",
-    body: "No worries at all.",
+    emoji: "😌",
+    title: "Fair enough",
+    body: "You finally caught the button. No hard feelings — I'll delete this from my brain immediately.",
   },
 };
+
+const submitErrorMessages: Record<string, string> = {
+  "Failed to save response.":
+    "My backend got shy. Tap Lock it in one more time?",
+  "Internal server error.":
+    "Something broke on my end — not your fault. Try again in a sec?",
+  "Invalid request body.":
+    "That didn't go through. Mind trying once more?",
+};
+
+export function getSubmitErrorMessage(raw?: string) {
+  if (!raw) {
+    return "Something went wrong. Try again?";
+  }
+  return submitErrorMessages[raw] ?? "Oops — try that one more time?";
+}
