@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { saveResponse } from "@/lib/responseStorage";
 import type { Answer, SubmitPayload } from "@/types/response";
 
 const MAX_MESSAGE_LENGTH = 2000;
@@ -61,30 +61,16 @@ export async function POST(request: NextRequest) {
     }
 
     const userAgent = request.headers.get("user-agent") ?? null;
-
-    const supabase = getSupabaseAdmin();
-    const { error } = await supabase.from("responses").insert({
-      name: validated.name ?? null,
-      answer: validated.answer,
-      selected_date: validated.selected_date ?? null,
-      selected_activity: validated.selected_activity ?? null,
-      message: validated.message ?? null,
-      user_agent: userAgent,
-    });
-
-    if (error) {
-      console.error("Supabase insert error:", error);
-      return NextResponse.json(
-        { success: false, error: "Failed to save response." },
-        { status: 500 },
-      );
-    }
+    await saveResponse(validated, userAgent);
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Submit route error:", error);
+    const message =
+      error instanceof Error ? error.message : "Internal server error.";
+
     return NextResponse.json(
-      { success: false, error: "Internal server error." },
+      { success: false, error: message },
       { status: 500 },
     );
   }

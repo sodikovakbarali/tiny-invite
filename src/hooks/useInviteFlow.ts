@@ -38,6 +38,7 @@ export function useInviteFlow(name?: string) {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [savedSuccessfully, setSavedSuccessfully] = useState(true);
 
   const resolvedDate = useMemo(
     () => formatDate(selectedDate),
@@ -82,14 +83,21 @@ export function useInviteFlow(name?: string) {
         selected_activity: activity?.label ?? selectedActivity,
         message: message.trim() || undefined,
       });
+      setSavedSuccessfully(true);
       setStep("success");
     } catch (err) {
       const raw = err instanceof Error ? err.message : undefined;
+      setSavedSuccessfully(false);
       setError(getSubmitErrorMessage(raw));
     } finally {
       setIsSubmitting(false);
     }
   }, [name, resolvedDate, selectedActivity, message]);
+
+  const continueAnyway = useCallback(() => {
+    setError("");
+    setStep("success");
+  }, []);
 
   return {
     step,
@@ -100,6 +108,7 @@ export function useInviteFlow(name?: string) {
     resolvedDate,
     isSubmitting,
     error,
+    savedSuccessfully,
     setSelectedDate,
     setSelectedActivity,
     setMessage,
@@ -107,6 +116,7 @@ export function useInviteFlow(name?: string) {
     incrementNoAttempts,
     submitNo,
     submitYes,
+    continueAnyway,
     setError,
   };
 }

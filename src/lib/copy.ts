@@ -13,47 +13,65 @@ export const questionCopy = {
 };
 
 export const yayCopy = {
-  emoji: "💕✨💕",
-  heading: "Yay!",
-  subheading: "I'm so glad you said yes.",
-  cta: "Press to continue",
+  emoji: "🥹",
+  heading: "Wait, really?",
+  subheading: "Give me one second to calm down.",
+  cta: "Okay — let's plan it",
 };
 
 export const dateCopy = {
-  emoji: "📅💕",
-  heading: "Pick a date",
-  subheading: "Choose the day for our cute little plan.",
-  cta: "Continue",
+  emoji: "🗓️",
+  heading: "When works for you?",
+  subheading: "Pick a day that feels right.",
+  cta: "Next",
 };
 
 export const activityCopy = {
-  emoji: "🍿🍝🌸",
-  heading: "What would you like to do?",
-  cta: "Continue",
+  emoji: "🕌✨",
+  heading: "What's the vibe?",
+  subheading: "Pick something fun in Bukhara.",
+  cta: "Next",
 };
 
 export const messageCopy = {
-  emoji: "💌",
-  heading: "Anything else?",
-  subheading: "Totally optional.",
-  placeholder: "Tell me anything…",
-  cta: "Continue",
+  emoji: "💬",
+  heading: "Last little note?",
+  subheading: "Only if you want to.",
+  placeholder: "Anything I should know…",
+  cta: "Almost done",
 };
 
-export function getConfirmCopy(date: string, activity: string) {
+export function getConfirmCopy(
+  date: string,
+  activity: string,
+  message?: string,
+) {
   return {
-    emoji: "✨",
-    heading: "Ready?",
-    summary: `${date} · ${activity}`,
-    cta: "Lock it in",
+    badge: "Your date ticket",
+    heading: "Does this look right?",
+    whenLabel: "When",
+    planLabel: "The plan",
+    noteLabel: "Your note",
+    date,
+    activity,
+    message: message?.trim() || null,
+    cta: "Send it my way 💌",
+    retryCta: "Try sending again",
+    fallbackCta: "Just count me in anyway",
+    backLabel: "← Change something",
   };
 }
 
 export const successCopy = {
   yes: {
     emoji: "💕",
-    title: "Done!",
-    body: "Got it. Can't wait 💕",
+    title: "It's official!",
+    body: "Saved. I'll be in touch soon — get ready for me to be slightly nervous.",
+  },
+  yesOffline: {
+    emoji: "💕",
+    title: "It's a yes from me!",
+    body: "My server glitched, but I got the message. I'll text you to confirm the details 💕",
   },
   no: {
     emoji: "😌",
@@ -64,11 +82,11 @@ export const successCopy = {
 
 const submitErrorMessages: Record<string, string> = {
   "Failed to save response.":
-    "My backend got shy. Tap Lock it in one more time?",
-  "Internal server error.":
-    "Something broke on my end — not your fault. Try again in a sec?",
+    "Couldn't save this yet — give it one more try.",
+  "Server not configured.":
+    "Saving isn't set up on the live site yet. Tap below to continue anyway.",
   "Invalid request body.":
-    "That didn't go through. Mind trying once more?",
+    "That didn't go through. Mind giving it another shot?",
 };
 
 export function getSubmitErrorMessage(raw?: string) {

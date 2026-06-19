@@ -5,10 +5,12 @@ import { successCopy } from "@/lib/copy";
 
 interface SuccessStepProps {
   variant: "yes" | "no";
+  offline?: boolean;
 }
 
-export function SuccessStep({ variant }: SuccessStepProps) {
-  const copy = successCopy[variant];
+export function SuccessStep({ variant, offline = false }: SuccessStepProps) {
+  const copy =
+    variant === "yes" && offline ? successCopy.yesOffline : successCopy[variant];
 
   return (
     <motion.div

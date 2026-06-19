@@ -67,13 +67,21 @@ function InviteFlow() {
               <ConfirmStep
                 resolvedDate={flow.resolvedDate}
                 selectedActivity={flow.selectedActivity}
+                message={flow.message}
                 isSubmitting={flow.isSubmitting}
                 error={flow.error}
                 onSubmit={flow.submitYes}
+                onContinueAnyway={flow.continueAnyway}
+                onBack={() => flow.goToStep("activity")}
               />
             )}
 
-            {flow.step === "success" && <SuccessStep variant="yes" />}
+            {flow.step === "success" && (
+              <SuccessStep
+                variant="yes"
+                offline={!flow.savedSuccessfully}
+              />
+            )}
 
             {flow.step === "no-respect" && <SuccessStep variant="no" />}
           </StepContainer>

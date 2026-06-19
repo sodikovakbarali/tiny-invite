@@ -78,7 +78,9 @@ Open:
 
 - [http://localhost:3000](http://localhost:3000) — invitation flow
 - [http://localhost:3000/admin](http://localhost:3000/admin) — admin dashboard
-- [http://localhost:3000?name=Someone](http://localhost:3000?name=Someone) — personalized landing (optional)
+- [http://localhost:3000?name=Someone](http://localhost:3000?name=Someone) — optional name in the URL
+
+**Without Supabase locally:** if `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are empty, responses are saved to `data/responses.json` during development so you can test the full flow. View them at `/admin` with your `ADMIN_PASSWORD`. For production on Vercel, Supabase env vars are required.
 
 ## Personalization
 

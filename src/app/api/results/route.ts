@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { listResponses } from "@/lib/responseStorage";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,26 +24,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseAdmin();
-    const { data, error } = await supabase
-      .from("responses")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if (error) {
-      console.error("Supabase fetch error:", error);
-      return NextResponse.json(
-        { success: false, error: "Failed to fetch responses." },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json({ success: true, responses: data ?? [] });
+    const responses = await listResponses();
+    return NextResponse.json({ success: true, responses });
   } catch (error) {
     console.error("Results route error:", error);
+    const message =
+      error instanceof Error ? error.message : "Internal server error.";
+
     return NextResponse.json(
-      { success: false, error: "Internal server error." },
+      { success: false, error: message },
       { status: 500 },
     );
   }
