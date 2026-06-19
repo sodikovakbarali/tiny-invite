@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ActivityStep } from "@/components/invite/ActivityStep";
@@ -9,10 +10,17 @@ import { LandingStep } from "@/components/invite/LandingStep";
 import { MessageStep } from "@/components/invite/MessageStep";
 import { QuestionStep } from "@/components/invite/QuestionStep";
 import { SuccessStep } from "@/components/invite/SuccessStep";
-import { AnimatedBackground } from "@/components/ui/AnimatedBackground";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { StepContainer } from "@/components/ui/StepContainer";
 import { useInviteFlow } from "@/hooks/useInviteFlow";
+
+const AnimatedBackground = dynamic(
+  () =>
+    import("@/components/ui/AnimatedBackground").then(
+      (module) => module.AnimatedBackground,
+    ),
+  { ssr: false },
+);
 
 function InviteFlow() {
   const searchParams = useSearchParams();
