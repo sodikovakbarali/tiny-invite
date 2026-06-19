@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Heart, Sparkles, Star } from "lucide-react";
-import { useState } from "react";
 
 interface Particle {
   id: number;
@@ -13,6 +12,28 @@ interface Particle {
   duration: number;
   type: "heart" | "sparkle" | "star";
 }
+
+function seededValue(seed: number, min: number, max: number) {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+  const normalized = x - Math.floor(x);
+  return min + normalized * (max - min);
+}
+
+function createParticles(): Particle[] {
+  const types: Particle["type"][] = ["heart", "sparkle", "star"];
+
+  return Array.from({ length: 18 }, (_, i) => ({
+    id: i,
+    x: seededValue(i * 4 + 1, 0, 100),
+    y: seededValue(i * 4 + 2, 0, 100),
+    size: seededValue(i * 4 + 3, 0.6, 1.4),
+    delay: seededValue(i * 4 + 4, 0, 4),
+    duration: seededValue(i * 4 + 5, 6, 14),
+    type: types[i % types.length],
+  }));
+}
+
+const PARTICLES = createParticles();
 
 function ParticleIcon({ type }: { type: Particle["type"] }) {
   const className = "text-wine/20";
@@ -29,26 +50,13 @@ function ParticleIcon({ type }: { type: Particle["type"] }) {
 }
 
 export function AnimatedBackground() {
-  const [particles] = useState<Particle[]>(() => {
-    const types: Particle["type"][] = ["heart", "sparkle", "star"];
-    return Array.from({ length: 18 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 0.6 + Math.random() * 0.8,
-      delay: Math.random() * 4,
-      duration: 6 + Math.random() * 8,
-      type: types[i % types.length],
-    }));
-  });
-
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(249,228,232,0.8),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_60%,rgba(232,224,240,0.7),transparent_45%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(114,47,55,0.08),transparent_40%)]" />
 
-      {particles.map((particle) => (
+      {PARTICLES.map((particle) => (
         <motion.div
           key={particle.id}
           className="absolute"
