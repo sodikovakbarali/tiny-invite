@@ -3,11 +3,17 @@ export const questionCopy = {
   yes: "Yes",
   no: "No",
   noFinal: "Okay fine 😭",
+  noClickThreshold: 10,
   dodgeMessages: [
     "Nice try 😄",
     "Still nope",
     "Almost got it",
     "So close",
+    "Getting warmer",
+    "Not quite",
+    "Keep trying",
+    "Still running",
+    "One more chase",
     "Last chance",
   ],
 };

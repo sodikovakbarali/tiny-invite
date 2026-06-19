@@ -18,7 +18,7 @@ interface QuestionStepProps {
   onDodge: () => void;
 }
 
-const NO_CLICK_THRESHOLD = 5;
+const NO_CLICK_THRESHOLD = questionCopy.noClickThreshold;
 const BUTTON_CLASS = "w-full min-w-[7.5rem] !px-4 !py-3.5";
 
 function fireConfetti() {
