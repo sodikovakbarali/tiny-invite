@@ -12,11 +12,13 @@ import { YayStep } from "@/components/invite/YayStep";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { StepContainer } from "@/components/ui/StepContainer";
 import { useInviteFlow } from "@/hooks/useInviteFlow";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 function InviteFlow() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name")?.trim() || undefined;
 
+  usePageTracking({ name });
   const flow = useInviteFlow(name);
 
   return (

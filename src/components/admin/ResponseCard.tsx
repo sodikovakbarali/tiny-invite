@@ -1,6 +1,7 @@
 "use client";
 
-import { Calendar, Globe, MessageSquare, Tag, User } from "lucide-react";
+import { Calendar, MessageSquare, Tag, User } from "lucide-react";
+import { VisitMetadata } from "@/components/admin/VisitMetadata";
 import type { ResponseRecord } from "@/types/response";
 
 interface ResponseCardProps {
@@ -92,20 +93,9 @@ export function ResponseCard({ response }: ResponseCardProps) {
           </div>
         )}
 
-        {response.user_agent && (
-          <div className="flex items-start gap-2">
-            <Globe className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                User agent
-              </dt>
-              <dd className="break-all text-xs text-gray-600">
-                {response.user_agent}
-              </dd>
-            </div>
-          </div>
-        )}
       </dl>
+
+      <VisitMetadata metadata={response} className="mt-4 border-t border-gray-100 pt-4" />
     </article>
   );
 }

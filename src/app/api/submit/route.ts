@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { extractRequestMetadata } from "@/lib/requestMetadata";
 import { saveResponse } from "@/lib/responseStorage";
 import type { Answer, SubmitPayload } from "@/types/response";
 
@@ -60,8 +61,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userAgent = request.headers.get("user-agent") ?? null;
-    await saveResponse(validated, userAgent);
+    const metadata = extractRequestMetadata(request);
+    await saveResponse(validated, metadata);
 
     return NextResponse.json({ success: true });
   } catch (error) {

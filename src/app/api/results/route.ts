@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listResponses } from "@/lib/responseStorage";
+import { listPageViews, listResponses } from "@/lib/responseStorage";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,8 +24,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const responses = await listResponses();
-    return NextResponse.json({ success: true, responses });
+    const [responses, pageViews] = await Promise.all([
+      listResponses(),
+      listPageViews(),
+    ]);
+
+    return NextResponse.json({ success: true, responses, pageViews });
   } catch (error) {
     console.error("Results route error:", error);
     const message =

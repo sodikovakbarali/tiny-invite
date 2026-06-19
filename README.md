@@ -31,6 +31,51 @@ create table responses (
   selected_activity text,
   message text,
   user_agent text,
+  ip_address text,
+  country text,
+  city text,
+  region text,
+  language text,
+  referrer text,
+  created_at timestamp with time zone default now()
+);
+
+create table page_views (
+  id uuid primary key default gen_random_uuid(),
+  name text,
+  path text,
+  ip_address text,
+  country text,
+  city text,
+  region text,
+  language text,
+  referrer text,
+  user_agent text,
+  created_at timestamp with time zone default now()
+);
+```
+
+**Already created the `responses` table?** Run this migration in the SQL Editor instead:
+
+```sql
+alter table responses add column if not exists ip_address text;
+alter table responses add column if not exists country text;
+alter table responses add column if not exists city text;
+alter table responses add column if not exists region text;
+alter table responses add column if not exists language text;
+alter table responses add column if not exists referrer text;
+
+create table if not exists page_views (
+  id uuid primary key default gen_random_uuid(),
+  name text,
+  path text,
+  ip_address text,
+  country text,
+  city text,
+  region text,
+  language text,
+  referrer text,
+  user_agent text,
   created_at timestamp with time zone default now()
 );
 ```
@@ -100,7 +145,8 @@ src/
 │   ├── page.tsx              # Multi-step invite flow
 │   ├── admin/page.tsx        # Password-protected admin
 │   └── api/
-│       ├── submit/route.ts   # Save responses
+│       ├── submit/route.ts   # Save responses (+ visitor metadata)
+│       ├── track/route.ts    # Log page views
 │       └── results/route.ts  # Fetch responses (password protected)
 ├── components/
 │   ├── invite/               # Step components
@@ -116,21 +162,30 @@ src/
 
 ## Deployment on Vercel
 
-1. Push the repo to GitHub:
+1. **Run the Supabase migration** (see SQL above) if you already have a live project — new columns and the `page_views` table are required.
+
+2. Push the repo to GitHub:
 
 ```bash
 git add .
-git commit -m "Build romantic invite flow"
+git commit -m "Add visitor metadata and page view tracking"
 git push
 ```
 
-2. Go to [vercel.com](https://vercel.com) and import the `tiny-invite` repository.
-3. Add all four environment variables.
-4. Deploy.
-5. Test the full flow on your Vercel URL.
-6. Open `/admin` and confirm responses appear.
-7. Delete any test rows from Supabase if needed.
-8. Share the link (optionally with `?name=...`).
+3. Vercel auto-deploys when you push to `main`. No new environment variables are needed — the same four vars still apply.
+
+4. Wait for the deploy to finish in the Vercel dashboard (usually 1–2 minutes).
+
+5. Test on your live URL:
+   - Open `/` — this logs a page view
+   - Submit a test response
+   - Open `/admin`, enter your password — you should see **Page views** (with IP, location, language, referrer) and **Responses** (same metadata on each answer)
+
+6. Delete any test rows from Supabase if needed.
+
+7. Share the link (optionally with `?name=...`).
+
+> **Note:** IP, country, and city come from Vercel headers and only appear on the deployed site — not when running `npm run dev` locally.
 
 ## Security notes
 

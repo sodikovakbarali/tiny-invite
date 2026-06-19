@@ -2,15 +2,17 @@
 
 import { FormEvent, useState } from "react";
 import { Lock, ShieldCheck } from "lucide-react";
+import { PageViewCard } from "@/components/admin/PageViewCard";
 import { ResponseCard } from "@/components/admin/ResponseCard";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import type { ResponseRecord } from "@/types/response";
+import type { PageViewRecord, ResponseRecord } from "@/types/response";
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [responses, setResponses] = useState<ResponseRecord[] | null>(null);
+  const [pageViews, setPageViews] = useState<PageViewRecord[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,6 +35,7 @@ export default function AdminPage() {
         setError("Incorrect password.");
         setIsAuthenticated(false);
         setResponses(null);
+        setPageViews(null);
         return;
       }
 
@@ -41,10 +44,12 @@ export default function AdminPage() {
       }
 
       setResponses(data.responses ?? []);
+      setPageViews(data.pageViews ?? []);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
       setResponses(null);
+      setPageViews(null);
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +66,9 @@ export default function AdminPage() {
             <h1 className="font-serif text-2xl font-semibold text-foreground">
               Admin
             </h1>
-            <p className="text-sm text-muted">View submitted responses</p>
+            <p className="text-sm text-muted">
+              Responses, page views, and visitor metadata
+            </p>
           </div>
         </div>
 
@@ -102,21 +109,39 @@ export default function AdminPage() {
           <LoadingSpinner label="Fetching responses..." className="mt-8" />
         )}
 
-        {isAuthenticated && responses !== null && (
-          <div className="mt-8 space-y-4">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500">
-              {responses.length} response{responses.length === 1 ? "" : "s"}
-            </h2>
+        {isAuthenticated && responses !== null && pageViews !== null && (
+          <div className="mt-8 space-y-10">
+            <section className="space-y-4">
+              <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500">
+                {pageViews.length} page view{pageViews.length === 1 ? "" : "s"}
+              </h2>
 
-            {responses.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-gray-300 bg-white/70 p-8 text-center text-sm text-gray-500">
-                No responses yet. The suspense continues.
-              </div>
-            ) : (
-              responses.map((response) => (
-                <ResponseCard key={response.id} response={response} />
-              ))
-            )}
+              {pageViews.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-gray-300 bg-white/70 p-8 text-center text-sm text-gray-500">
+                  No page views yet. Share the link to start tracking opens.
+                </div>
+              ) : (
+                pageViews.map((pageView) => (
+                  <PageViewCard key={pageView.id} pageView={pageView} />
+                ))
+              )}
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500">
+                {responses.length} response{responses.length === 1 ? "" : "s"}
+              </h2>
+
+              {responses.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-gray-300 bg-white/70 p-8 text-center text-sm text-gray-500">
+                  No responses yet. The suspense continues.
+                </div>
+              ) : (
+                responses.map((response) => (
+                  <ResponseCard key={response.id} response={response} />
+                ))
+              )}
+            </section>
           </div>
         )}
       </div>
